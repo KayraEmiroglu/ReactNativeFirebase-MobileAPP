@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInputs";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
 import { styles } from "./styles";
+import firestoreServices from "../../util/firebase/firestoreServices";
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState("");
@@ -16,14 +16,26 @@ export default function SignUpScreen() {
 
   const navigation = useNavigation();
 
-  // Events Handlers =========
-  const onRegisterPressed = () => {
-    navigation.navigate("ConfirmEmail");
-  };
 
+  //onSignInPressed
   const onSignInPressed = () => {
     navigation.navigate("SignIn");
   };
+
+  // Events Handlers =========
+  //with userID
+  const onRegisterPressed = () => {
+    firestoreServices
+      .registerUser(email, password, firstName, lastName)
+      .then(() => {
+        navigation.navigate("SignIn");
+      })
+      .catch((error) => {
+        console.error("Error registering user: ", error);
+      });
+
+  };
+
   const onTermsPressed = () => {
     //TODO: Create page and add page to navigation
     navigation.navigate("TermsOfUse");

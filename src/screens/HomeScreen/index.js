@@ -32,6 +32,9 @@ export default function HomeScreen() {
     fetchWounds();
   }, []);
 
+  
+  
+
   //when i click the wound card, it should go to wound details screen
   const handleWoundCardPress = (wound) => {
     navigation.navigate("WoundDetails", { wound: wound });

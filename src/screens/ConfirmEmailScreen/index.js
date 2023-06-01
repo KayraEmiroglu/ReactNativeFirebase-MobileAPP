@@ -11,7 +11,15 @@ export default function ConfirmEmailScreen() {
 
   const navigation = useNavigation();
 
-  const onConfirmPressed = () => navigation.navigate('Home');
+  const onConfirmPressed = () => {
+    //check code is correct
+    //if correct, navigate to Home
+    //else, show error
+    
+
+
+
+  };
   const onBackToSignInPressed = () => navigation.navigate('SignIn');
   const onResendCode = () => console.warn('resend code');
 

@@ -5,7 +5,7 @@ import { Header } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { styles } from "./style";
 import { handleCameraPress } from "../../util/camera";
-
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 
 
@@ -16,10 +16,11 @@ const TabBarComponent = () => {
   const [imageUri, setImageUri] = useState(null);
 
   handleSideBarPress = () => {
-    console.log("laalaa");
     setSidebarVisible(true);
-  
   }
+
+  //Every user should see their name we can fetch from current user firestore
+
 
   return (
     <View>
