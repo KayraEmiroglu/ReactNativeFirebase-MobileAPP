@@ -1,4 +1,4 @@
-# React Native and Expo Authentication Template
+# React Native and Expo 
 
 Reusable Template for creating React Native Apps.
 
@@ -15,3 +15,6 @@ This template includes the UI screens for:
   - React Native
   - Expo
   - React Navigation
+  - Firebase
+  - Firebase/auth
+  - expo camera
