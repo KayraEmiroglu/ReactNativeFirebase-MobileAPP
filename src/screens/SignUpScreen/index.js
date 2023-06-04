@@ -25,6 +25,10 @@ export default function SignUpScreen() {
   // Events Handlers =========
   //with userID
   const onRegisterPressed = () => {
+    if (email === "" || password === "" || firstName === "" || lastName === "") {
+      alert("Please provide your details");
+      return;
+    }
     firestoreServices
       .registerUser(email, password, firstName, lastName)
       .then(() => {
