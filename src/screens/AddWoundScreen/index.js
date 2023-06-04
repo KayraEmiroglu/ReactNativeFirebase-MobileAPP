@@ -20,28 +20,35 @@ const AddWoundScreen = () => {
 
   const handleUploadPhoto = async () => {
     try {
-      const photoUrl = await uploadPhoto(imageUri);
-      console.log("Databaseye gitti:", photoUrl);
-
+      const auth = getAuth();
+      const user = currentUser(auth);
+  
+      if (!user) {
+        throw new Error("User is not logged in");
+      }
+  
+      const photoUrl = await uploadPhoto(imageUri, user.uid);
+      console.log("Uploaded to database:", photoUrl);
+  
       const woundId = uuidv4();
-
+  
       const wound = {
-        id: woundId, // Burada id'yi yolluyoruz
+        id: woundId,
         createdAt: new Date().toISOString(),
         photoUrl: photoUrl,
         location: location,
-        updatedAt:null,
+        updatedAt: null,
+        userId: user.uid,
       };
   
       await FirestoreService.addWound(wound);
       Alert.alert("Wound added successfully!");
-      
+  
+      renderPage(); // Sayfayı geçiş yapmak için
     } catch (error) {
-      console.log("Error uploading photo:", error);
       Alert.alert("An error occurred while uploading the photo.");
     }
   };
-
 
   const renderPage = () => {
     navigation.navigate("Home");

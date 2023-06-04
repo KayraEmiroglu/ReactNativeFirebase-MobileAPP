@@ -2,37 +2,36 @@ import { View, ScrollView, Text } from "react-native";
 import TabBarComponent from "../../components/HomeTabBar";
 import WoundCard from "../../components/WoundCard";
 import { useEffect, useState } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
+import firestoreServices from "../../util/firebase/firestoreServices";
+import { getWoundsByUserId } from "../../util/firebase/firebaseStorage";
+
 
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const [wounds, setWounds] = useState([]);
 
-  //woundları çek photoları göster 
+  //getWoundByUserId use this method
   useEffect(() => {
-    const fetchWounds = async () => {
-      try {
-        const db = getFirestore(); // Firestore nesnesini alın
-        const woundsCollection = collection(db, "wounds"); // wounds koleksiyonunu alın
-        const snapshot = await getDocs(woundsCollection); // belgeleri getir
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("Home screen focused");
   
-        const wounds = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        
-        setWounds(wounds);
-      } catch (error) {
-        console.error("Error fetching wounds: ", error);
-      }
-    };
+      const userId = firestoreServices.getCurrentUserId();
   
-    fetchWounds();
+      getWoundsByUserId(userId)
+        .then((wounds) => {
+          console.log("Wounds: ", wounds);
+          setWounds(wounds);
+        })
+        .catch((error) => {
+          return [];
+        });
+    });
+  
+    return unsubscribe;
   }, []);
 
-  
   
 
   //when i click the wound card, it should go to wound details screen

@@ -13,9 +13,9 @@ export default function SignUpScreen() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
-
 
   //onSignInPressed
   const onSignInPressed = () => {
@@ -25,10 +25,18 @@ export default function SignUpScreen() {
   // Events Handlers =========
   //with userID
   const onRegisterPressed = () => {
-    if (email === "" || password === "" || firstName === "" || lastName === "") {
+    if (
+      email === "" ||
+      password === "" ||
+      firstName === "" ||
+      lastName === ""
+    ) {
       alert("Please provide your details");
       return;
     }
+
+    setIsLoading(true);
+
     firestoreServices
       .registerUser(email, password, firstName, lastName)
       .then(() => {
@@ -36,8 +44,10 @@ export default function SignUpScreen() {
       })
       .catch((error) => {
         console.error("Error registering user: ", error);
+      })
+      .finally(() => {
+        setIsLoading(false); // Stop loading
       });
-
   };
 
   const onTermsPressed = () => {
@@ -77,13 +87,15 @@ export default function SignUpScreen() {
           setValue={setPasswordConfirm}
           secureTextEntry={true}
         />
-
-        <CustomButton
-          onPress={onRegisterPressed}
-          text="Register"
-          type="primary"
-        />
-
+        {isLoading ? ( // Conditional rendering based on loading state
+          <ActivityIndicator size="small" color="gray" /> // Display loading indicator while loading
+        ) : (
+          <CustomButton
+            onPress={onRegisterPressed}
+            text="Register"
+            type="primary"
+          />
+        )}
         {/* TERMS OF USE AND PRIVACY INFO  */}
         <Text style={styles.terms}>
           By registering, you confirm that you accept our{" "}

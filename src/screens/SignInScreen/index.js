@@ -5,6 +5,7 @@ import {
   Image,
   useWindowDimensions,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,6 +19,7 @@ import firestoreServices from "../../util/firebase/firestoreServices";
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
@@ -30,12 +32,15 @@ export default function SignInScreen() {
     navigation.navigate("SignUp");
   };
 
-  //login user check inputs empty 
+  //login user check inputs empty
   const onSignInPressed = () => {
     if (email === "" || password === "") {
       alert("Please provide email or password");
       return;
     }
+
+    setIsLoading(true); // Start loading
+
     firestoreServices
       .loginUser(email, password)
       .then((user) => {
@@ -45,10 +50,12 @@ export default function SignInScreen() {
       .catch((error) => {
         console.error("Error logging in user: ", error);
         alert(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false); // Stop loading
       });
   };
 
- 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -62,8 +69,15 @@ export default function SignInScreen() {
           secureTextEntry={true}
         />
 
-        <CustomButton onPress={onSignInPressed} text="Sign In" type="primary" />
-
+        {isLoading ? ( // Conditional rendering based on loading state
+          <ActivityIndicator size="small" color="gray" /> // Display loading indicator while loading
+        ) : (
+          <CustomButton
+            onPress={onSignInPressed}
+            text="Sign In"
+            type="primary"
+          /> // Display sign-in button when not loading
+        )}
         <CustomButton
           onPress={onForgotPasswordPressed}
           text="Forgot password?"

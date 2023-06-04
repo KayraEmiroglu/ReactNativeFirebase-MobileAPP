@@ -1,26 +1,42 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import {  Image, Modal, Text, TouchableOpacity, View} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { Header } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { styles } from "./style";
 import { handleCameraPress } from "../../util/camera";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-
-
+import firestoreServices from "../../util/firebase/firestoreServices";
 
 const TabBarComponent = () => {
   const navigation = useNavigation();
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const [imageUri, setImageUri] = useState(null);
 
   handleSideBarPress = () => {
     setSidebarVisible(true);
-  }
+  };
 
-  //Every user should see their name we can fetch from current user firestore
+  //get user info from with getCurrentUserId
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
 
+      firestoreServices
+        .getCurrentUser()
+        .then((user) => {
+          // Set the user's first name and last name in the state
+          setFirstName(user.firstName);
+          setLastName(user.lastName);
+        })
+        .catch((error) => {
+          console.error("Error getting current user: ", error);
+        });
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <View>
@@ -30,11 +46,13 @@ const TabBarComponent = () => {
             name="bars"
             size={30}
             color="#fff"
-            onPress={() => handleSideBarPress()
-            }             
+            onPress={() => handleSideBarPress()}
           />
         }
-        centerComponent={{ text: "Emiroglu , Kayra", style: { color: "#fff" } }}
+        centerComponent={{
+          text: `${lastName}, ${firstName}`,
+          style: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+        }}
         rightComponent={
           <Icon
             name="plus"
@@ -54,13 +72,11 @@ const TabBarComponent = () => {
         transparent={true}
         visible={sidebarVisible}
         onRequestClose={() => {
-            
           setSidebarVisible(!sidebarVisible);
         }}
       >
         <View style={styles.modalView}>
-          <TouchableOpacity onPress={() => 
-            setSidebarVisible(false)}>
+          <TouchableOpacity onPress={() => setSidebarVisible(false)}>
             <Icon style={styles.icon} name="close" size={30} color="#000" />
           </TouchableOpacity>
           {imageUri ? (
@@ -70,12 +86,21 @@ const TabBarComponent = () => {
               <Icon name="user" size={100} color="#000" />
             </TouchableOpacity>
           )}
-          <Text style={styles.textStyle}>Emiroglu , Kayra</Text>
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => {navigation.navigate('ProfileScreen')}}>
+          <Text style={styles.textStyle}>{`${firstName} ${lastName}`}</Text>
+
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => {
+              navigation.navigate("ProfileScreen");
+            }}
+          >
             <Icon name="user" size={30} color="#000" />
             <Text style={styles.buttonText}>Account</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate("SignIn")}>
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => navigation.navigate("SignIn")}
+          >
             <Icon name="sign-out" size={30} color="#000" />
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>

@@ -3,10 +3,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 export const handleCameraPress = async (setImageUri,location) => {
 
-  if(location == null){
-    Alert.alert("Please select a location first.")
-    return;
-  }
 
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
