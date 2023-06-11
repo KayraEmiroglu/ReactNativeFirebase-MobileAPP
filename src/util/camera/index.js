@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export const handleCameraPress = async (setImageUri,location) => {
+export const handleCameraPress = async (setImageUri) => {
 
 
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -16,11 +16,12 @@ export const handleCameraPress = async (setImageUri,location) => {
         onPress: async () => {
           let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
             quality: 1,
           });
   
           if (!result.canceled) {
-            console.log(result); 
             setImageUri(result.assets[0].uri);      
           }
         },
@@ -30,11 +31,12 @@ export const handleCameraPress = async (setImageUri,location) => {
         onPress: async () => {
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
             quality: 1,
           });
   
           if (!result.canceled) {
-            console.log(result);
             setImageUri(result.assets[0].uri);    
           }
         },

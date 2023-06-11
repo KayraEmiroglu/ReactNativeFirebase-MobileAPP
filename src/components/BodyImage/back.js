@@ -7,7 +7,6 @@ const Back = (props) => {
     const windowWidth = Dimensions.get("window").width;
   
     const handlePress = (part) => {
-      console.log(part); // burada, tıklanan vücut bölgesinin adını konsola yazdırırız
       setSelectedPart(part);
       props.onSelect(part);  
   };
@@ -41,8 +40,8 @@ const Back = (props) => {
         onPress={() => handlePress("rightArm")}
       />
       <TouchableOpacity
-        style={[styles.body, selectedPart === "body" ? styles.selected : null]}
-        onPress={() => handlePress("body")}
+        style={[styles.body, selectedPart === "back" ? styles.selected : null]}
+        onPress={() => handlePress("back")}
       />
       <TouchableOpacity
         style={[

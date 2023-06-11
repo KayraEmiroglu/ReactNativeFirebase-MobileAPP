@@ -6,11 +6,14 @@ import FirestoreService from "../../util/firebase/firestoreServices";
 import { uploadPhoto } from "../../util/firebase/firebaseStorage";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "@firebase/auth";
+import { useDispatch } from "react-redux";
+import { uploadWoundPhoto } from "../../util/action/woundAction";
 
 const AddWoundScreen = () => {
   const navigation = useNavigation();
 
-
+  const dispatch = useDispatch();
   const [location, setLocation] = useState(null);
   const [imageUri, setImageUri] = useState(null);
 
@@ -18,34 +21,25 @@ const AddWoundScreen = () => {
     setLocation(part);
   };
 
-  const handleUploadPhoto = async () => {
+  const handleUploadPhoto = () => {
     try {
       const auth = getAuth();
-      const user = currentUser(auth);
+      const user = auth.currentUser;
   
       if (!user) {
         throw new Error("User is not logged in");
       }
   
-      const photoUrl = await uploadPhoto(imageUri, user.uid);
-      console.log("Uploaded to database:", photoUrl);
-  
-      const woundId = uuidv4();
-  
-      const wound = {
-        id: woundId,
-        createdAt: new Date().toISOString(),
-        photoUrl: photoUrl,
-        location: location,
-        updatedAt: null,
-        userId: user.uid,
-      };
-  
-      await FirestoreService.addWound(wound);
-      Alert.alert("Wound added successfully!");
-  
-      renderPage(); // Sayfayı geçiş yapmak için
+      dispatch(uploadWoundPhoto(imageUri, location, user.uid))
+        .then(() => {
+          navigation.navigate("Home");
+        })
+        .catch((error) => {
+          console.log(error);
+          Alert.alert("An error occurred while uploading the photo.");
+        });
     } catch (error) {
+      console.log(error);
       Alert.alert("An error occurred while uploading the photo.");
     }
   };
@@ -67,7 +61,7 @@ const AddWoundScreen = () => {
         setLocation={handleLocationSelect}
       />
          
-      {imageUri && location &&  (
+      {imageUri && location && (
         <Button title="Upload to Database" onPress={() =>{ 
           handleUploadPhoto();
           renderPage();

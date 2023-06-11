@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  deleteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
 });
 
 export default styles;

@@ -15,7 +15,7 @@ const AddWoundTabBar = ({setImageUri,location}) => {
     Alert.alert("Please select a location first.")
     return;
   }
-    handleCameraPress(setImageUri,location);
+    handleCameraPress(setImageUri);
   };
 
 
@@ -40,7 +40,7 @@ const AddWoundTabBar = ({setImageUri,location}) => {
           />
         }
         containerStyle={{
-          backgroundColor: "purple",
+          backgroundColor: "#55c4bd",
           justifyContent: "space-around",
         }}
       />

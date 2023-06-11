@@ -62,7 +62,7 @@ const TabBarComponent = () => {
           />
         }
         containerStyle={{
-          backgroundColor: "purple", // your desired color
+          backgroundColor: "#55c4bd",
           justifyContent: "space-around",
         }}
       />

@@ -6,6 +6,7 @@ import CustomInput from "../../components/CustomInputs";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
 import { styles } from "./styles";
 import firestoreServices from "../../util/firebase/firestoreServices";
+import { ActivityIndicator } from "react-native";
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState("");

@@ -16,6 +16,7 @@ import SocialSignInButtons from "../../components/SocialSignInButtons";
 import { styles } from "./styles";
 import firestoreServices from "../../util/firebase/firestoreServices";
 
+
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,22 +45,23 @@ export default function SignInScreen() {
     firestoreServices
       .loginUser(email, password)
       .then((user) => {
-        console.log("User logged in successfully: ", user);
         navigation.navigate("Home");
       })
       .catch((error) => {
         console.error("Error logging in user: ", error);
-        alert(error.message);
       })
       .finally(() => {
         setIsLoading(false); // Stop loading
       });
   };
 
+
+
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Image source={logo} style={{ ...styles.logo, height: height * 0.3 }} />
+        <Image source={logo} style={{ ...styles.logo, height: height * 0.3 , borderRadius: (height * 0.3) / 2 }} />
         <CustomInput placeholder="Email" value={email} setValue={setEmail} />
 
         <CustomInput
@@ -78,14 +80,14 @@ export default function SignInScreen() {
             type="primary"
           /> // Display sign-in button when not loading
         )}
+         <SocialSignInButtons />
+         
         <CustomButton
           onPress={onForgotPasswordPressed}
           text="Forgot password?"
           type="link"
         />
-
-        <SocialSignInButtons />
-
+  
         <CustomButton
           onPress={onSignUpPressed}
           text="Don't have an account? Create One"

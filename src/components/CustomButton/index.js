@@ -1,11 +1,13 @@
 import { View, Text, Pressable } from 'react-native';
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5'; 
 import { styles } from './styles';
 
 export default function CustomButton({
   onPress,
   text,
   type = 'primary',
+  iconName,
   bgColor,
   fgColor
 }) {
@@ -18,15 +20,25 @@ export default function CustomButton({
         bgColor ? { backgroundColor: bgColor } : {}
       ]}
     >
-      <Text
-        style={[
-          styles.text,
-          styles[`text_${type}`],
-          fgColor ? { color: fgColor } : {}
-        ]}
-      >
-        {text}
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {iconName && (
+          <Icon 
+            name={iconName} 
+            size={20} 
+            color={fgColor || '#000'} 
+            style={{ marginRight: 10 }} 
+          />
+        )}
+        <Text
+          style={[
+            styles.text,
+            styles[`text_${type}`],
+            fgColor ? { color: fgColor } : {}
+          ]}
+        >
+          {text}
+        </Text>
+      </View>
     </Pressable>
   );
 }

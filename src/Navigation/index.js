@@ -16,6 +16,7 @@ import WoundDetails from '../components/WoundDetails';
 // +++  Create Stack +++
 const Stack = createNativeStackNavigator();
 
+
 export default function Navigation() {
   return (
     <NavigationContainer>
@@ -34,6 +35,7 @@ export default function Navigation() {
         <Stack.Screen name="AddWoundScreen" component={AddWoundScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="WoundDetails" component={WoundDetails} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
