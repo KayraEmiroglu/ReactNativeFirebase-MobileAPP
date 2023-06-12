@@ -14,8 +14,8 @@ export default function SocialSignInButtons() {
         onPress={onSignInWithGoogle}
         text="Sign in with Google"
         type="primary"
-        bgColor="#fae9ea"
-        fgColor="#dd4d44"
+        bgColor="#d72f36"
+        fgColor="#fcfcfc"
         iconName="google" 
       />
     </>

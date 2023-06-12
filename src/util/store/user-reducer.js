@@ -1,6 +1,7 @@
 const initialState = {
     user: null,
     isLoggedIn: false,
+    profilePhoto: null,
   };
   
   const userReducer = (state = initialState, action) => {
@@ -17,6 +18,11 @@ const initialState = {
           user: null,
           isLoggedIn: false,
         };
+        case 'UPDATE_PHOTO':
+          return {
+            ...state,
+            profilePhoto: action.payload,
+          };
       default:
         return state;
     }

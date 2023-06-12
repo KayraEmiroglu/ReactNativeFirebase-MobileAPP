@@ -1,23 +1,24 @@
-import {
-  Dimensions,
-  Image,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
+import { Dimensions, Image, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import { styles } from "./stylesFront";
 
 const Front = (props) => {
   const [selectedPart, setSelectedPart] = useState(null);
   const windowWidth = Dimensions.get("window").width;
 
+  const imageWidth = windowWidth - 150;
+
   const handlePress = (part) => {
     console.log(part); // burada, tıklanan vücut bölgesinin adını konsola yazdırırız
     setSelectedPart(part);
-    props.onSelect(part);  
-};
+    props.onSelect(part);
+  };
 
-  const imageWidth = windowWidth - 150;
+  useEffect(() => {
+    if (props.reset) {
+      setSelectedPart(null);
+    }
+  }, [props.reset]);
 
   return (
     <View>

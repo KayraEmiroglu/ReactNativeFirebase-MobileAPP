@@ -4,7 +4,6 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     width: '100%',
-
     borderColor: '#e8e8e8',
     borderWidth: 1,
     borderRadius: 5,
@@ -13,6 +12,7 @@ export const styles = StyleSheet.create({
     marginVertical: 5
   },
   input: {
-    padding: 10
+    padding: 10,
+    margin: 5,
   }
 });

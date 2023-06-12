@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import { uploadPhoto } from "../firebase/firebaseStorage";
+import { deleteWoundWithId, uploadPhoto } from "../firebase/firebaseStorage";
 import firestoreServices from "../firebase/firestoreServices";
 import { v4 as uuidv4 } from "uuid";
 
@@ -65,12 +65,11 @@ export const deleteWoundAsync = (woundId) => {
   return async (dispatch) => {
     try {
       // ... perform delete operation, API call, or update store logic ...
-      await firestoreServices.deleteWound(woundId);
-
+      await firestoreServices.deleteWoundWithId(woundId);
 
       // Dispatch deleteWound action after successful deletion
       dispatch(deleteWound(woundId));
-      console.log('Wound deleted successfully');
+      console.log('Wound deleted successfully',woundId);
     } catch (error) {
       console.error('Error deleting wound: ', error);
     }

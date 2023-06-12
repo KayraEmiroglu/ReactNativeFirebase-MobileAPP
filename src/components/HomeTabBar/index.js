@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { Header } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { styles } from "./style";
-import { handleCameraPress } from "../../util/camera";
+
 import firestoreServices from "../../util/firebase/firestoreServices";
 
 const TabBarComponent = () => {
@@ -13,7 +12,6 @@ const TabBarComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const [imageUri, setImageUri] = useState(null);
 
   handleSideBarPress = () => {
     setSidebarVisible(true);
@@ -37,6 +35,9 @@ const TabBarComponent = () => {
 
     return unsubscribe;
   }, []);
+
+
+  
 
   return (
     <View>
@@ -62,50 +63,13 @@ const TabBarComponent = () => {
           />
         }
         containerStyle={{
-          backgroundColor: "#55c4bd",
+          backgroundColor: "#3da6d4",
           justifyContent: "space-around",
         }}
       />
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={sidebarVisible}
-        onRequestClose={() => {
-          setSidebarVisible(!sidebarVisible);
-        }}
-      >
-        <View style={styles.modalView}>
-          <TouchableOpacity onPress={() => setSidebarVisible(false)}>
-            <Icon style={styles.icon} name="close" size={30} color="#000" />
-          </TouchableOpacity>
-          {imageUri ? (
-            <Image style={styles.profileImage} source={{ uri: imageUri }} />
-          ) : (
-            <TouchableOpacity onPress={handleCameraPress}>
-              <Icon name="user" size={100} color="#000" />
-            </TouchableOpacity>
-          )}
-          <Text style={styles.textStyle}>{`${firstName} ${lastName}`}</Text>
-
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => {
-              navigation.navigate("ProfileScreen");
-            }}
-          >
-            <Icon name="user" size={30} color="#000" />
-            <Text style={styles.buttonText}>Account</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => navigation.navigate("SignIn")}
-          >
-            <Icon name="sign-out" size={30} color="#000" />
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+        
+     
     </View>
   );
 };

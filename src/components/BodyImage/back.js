@@ -1,19 +1,26 @@
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styles } from "./stylesBack";
 
 const Back = (props) => {
     const [selectedPart, setSelectedPart] = useState(null);
     const windowWidth = Dimensions.get("window").width;
+
+    const imageWidth = windowWidth - 150;
   
     const handlePress = (part) => {
       setSelectedPart(part);
       props.onSelect(part);  
   };
   
-
   
-    const imageWidth = windowWidth - 150;
+  useEffect(() => {
+    if (props.reset) {
+      setSelectedPart(null);
+    }
+  }, [props.reset]);
+  
+    
 
   return (
     <View>

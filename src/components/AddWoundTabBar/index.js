@@ -30,7 +30,7 @@ const AddWoundTabBar = ({setImageUri,location}) => {
             onPress={() => navigation.goBack()}
           />
         }
-        centerComponent={{ text: "Add New Wound", style: { color: "#fff" } }}
+        centerComponent={{ text: "Add New Wound", style: { color: "#fff" ,  fontSize: 18} }}
         rightComponent={
           <Icon
             name="camera"
@@ -40,7 +40,7 @@ const AddWoundTabBar = ({setImageUri,location}) => {
           />
         }
         containerStyle={{
-          backgroundColor: "#55c4bd",
+          backgroundColor: "#3da6d4",
           justifyContent: "space-around",
         }}
       />

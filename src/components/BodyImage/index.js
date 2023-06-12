@@ -6,7 +6,7 @@ import { styles } from "./stylesFront";
 import Front from "./front";
 import Back from "./back";
 
-const InteractiveImage = ({ setLocation }) => {
+const InteractiveImage = ({ setLocation , reset }) => {
   const [isFrontVisible, setIsFrontVisible] = useState(true);
 
   const handleButtonPress = () => {
@@ -21,13 +21,13 @@ const InteractiveImage = ({ setLocation }) => {
     <View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-          <FontAwesomeIcon icon={faRepeat} size={20} color="#000" />
+          <FontAwesomeIcon icon={faRepeat} size={25} color="#000" />
         </TouchableOpacity>
       </View>
       {isFrontVisible ? (
-        <Front onSelect={handleLocationSelect} />
+        <Front onSelect={handleLocationSelect} reset={reset} />
       ) : (
-        <Back onSelect={handleLocationSelect} />
+        <Back onSelect={handleLocationSelect} reset={reset} />
       )}
     </View>
   );

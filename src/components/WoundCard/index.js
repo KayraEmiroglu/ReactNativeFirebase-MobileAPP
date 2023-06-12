@@ -39,6 +39,9 @@ const WoundCard = ({ wound, onPress }) => {
 
   let woundLocation = wound.location;
 
+  //TODO kart yapısında kullanılacak 
+  let uri = null;
+
   if (woundLocation === "head") {
     woundLocation = "Head";
   }else if (woundLocation === "back") {
@@ -61,8 +64,8 @@ const WoundCard = ({ wound, onPress }) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image style={styles.image} source={{ uri: wound.photoUrl }} />
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Location:  {woundLocation}</Text>
-        <Text style={styles.infoText}>Date:  {formattedDate}</Text>
+        <Text style={styles.infoLocation}>Location:  {woundLocation}</Text>
+        <Text style={styles.infoDate}>Date:  {formattedDate}</Text>
       </View>
       {/* delete button right top the card use trash icon */}
       <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
