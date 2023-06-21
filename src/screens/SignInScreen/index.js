@@ -8,20 +8,21 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import logo from "../../../assets/images/Logo_1.png";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInputs";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
 import { styles } from "./styles";
 import firestoreServices from "../../util/firebase/firestoreServices";
-
+import { TouchableOpacity } from "react-native";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [hidePassword, setHidePassword] = useState(true);
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
@@ -55,20 +56,40 @@ export default function SignInScreen() {
       });
   };
 
-
-
-
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <Image source={logo} style={{ ...styles.logo, height: height * 0.3 , borderRadius: (height * 0.3) / 2 }} />
+        <Image
+          source={logo}
+          style={{
+            ...styles.logo,
+            height: height * 0.3,
+            borderRadius: (height * 0.3) / 2,
+          }}
+        />
         <CustomInput placeholder="Email" value={email} setValue={setEmail} />
 
-        <CustomInput
-          placeholder="Password"
-          value={password}
-          setValue={setPassword}
-          secureTextEntry={true}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            secureTextEntry={hidePassword}
+          />
+          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <FontAwesomeIcon
+              icon={hidePassword ? faEye : faEyeSlash}
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+
+        <CustomButton
+          onPress={onForgotPasswordPressed}
+          text="Forgot password?"
+          type="link"
         />
 
         {isLoading ? ( // Conditional rendering based on loading state
@@ -80,20 +101,15 @@ export default function SignInScreen() {
             type="primary"
           /> // Display sign-in button when not loading
         )}
-         <SocialSignInButtons />
-         
-        <CustomButton
-          onPress={onForgotPasswordPressed}
-          text="Forgot password?"
-          type="link"
-        />
-  
-        <CustomButton
-          onPress={onSignUpPressed}
-          text="Don't have an account? Create One"
-          type="link"
-        />
+        <SocialSignInButtons />
+
+        <TouchableOpacity style={styles.button} onPress={onSignUpPressed}>
+          <Text style={styles.buttonText}>
+            Don't have an account? Create One
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
+

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import styles from "./style";
+
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { deleteWoundAsync } from "../../util/action/woundAction";
 
 //create a card with the wound information
-const WoundCard = ({ wound, onPress }) => {
+const WoundCard = ({ wound, onPress,count }) => {
   const dispatch = useDispatch();
   const formattedDate = moment(wound.createdAt).format("DD/MM/YYYY");
 
@@ -40,7 +40,7 @@ const WoundCard = ({ wound, onPress }) => {
   let woundLocation = wound.location;
 
   //TODO kart yapısında kullanılacak 
-  let uri = null;
+  let woundUri = wound.photoUrl;
 
   if (woundLocation === "head") {
     woundLocation = "Head";
@@ -60,13 +60,20 @@ const WoundCard = ({ wound, onPress }) => {
     woundLocation = "Body";
   }
 
+
+
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image style={styles.image} source={{ uri: wound.photoUrl }} />
+      <Text style={styles.title}>
+        Wound : {count}
+      </Text>
+      
       <View style={styles.infoContainer}>
         <Text style={styles.infoLocation}>Location:  {woundLocation}</Text>
         <Text style={styles.infoDate}>Date:  {formattedDate}</Text>
       </View>
+      <Image style={styles.image} source={{ uri: wound.photoUrl }} />
       {/* delete button right top the card use trash icon */}
       <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
         <FontAwesomeIcon icon={faTrash} size={20} color="black" />
@@ -74,5 +81,49 @@ const WoundCard = ({ wound, onPress }) => {
     </TouchableOpacity>
   );
 };
+
+const styles =  StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 30,
+    margin: 9,
+    position: 'relative',
+  },
+  title: {
+    position: 'absolute', 
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    fontSize: 20,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center'
+},
+  image: {
+    width: 100,
+    height: 100,
+    marginRight: 20,
+  },
+  infoContainer: {
+    flex: 1,
+  },
+  infoLocation: {
+    fontSize: 15,
+    paddingBottom: 20,
+    fontWeight: 'bold',
+  },
+  deleteButton: {
+    position: 'absolute', // position the button absolutely
+    top: 5, // adjust as needed
+    right: 5, // adjust as needed
+  },
+});
+
 
 export default WoundCard;

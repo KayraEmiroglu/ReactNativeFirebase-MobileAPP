@@ -19,7 +19,7 @@ export default function ForgotPasswordScreen() {
         <Text style={styles.title}>Reset your Password</Text>
 
         <CustomInput
-          placeholder="Enter your email or username"
+          placeholder="Enter your email"
           value={username}
           setValue={setUsername}
         />

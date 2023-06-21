@@ -1,5 +1,5 @@
 const initialState = {
-  wounds: [],
+  wounds: [] ,
 };
 
 const woundReducer = (state = initialState, action) => {

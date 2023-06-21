@@ -14,7 +14,7 @@ export default function CustomInput({
         onChangeText={setValue}
         placeholder={placeholder}
         style={styles.input}
-        secureTextEntry={secureTextEntry}
+        secureTextEntry={secureTextEntry}s
       />
     </View>
   );

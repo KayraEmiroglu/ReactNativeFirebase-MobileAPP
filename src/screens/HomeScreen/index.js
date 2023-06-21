@@ -41,10 +41,11 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         {wounds && 
 
-          wounds.map((wound) => (
+          wounds.map((wound ,index) => (
             <WoundCard
-              key={wound.id}
+              key={index}
               wound={wound}
+              count = {index+1}
               onPress={() => handleWoundCardPress(wound)}
             />
           ))
