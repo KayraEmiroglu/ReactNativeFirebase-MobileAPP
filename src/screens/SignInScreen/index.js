@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   ScrollView,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -86,11 +87,12 @@ export default function SignInScreen() {
           </TouchableOpacity>
         </View>
 
-        <CustomButton
-          onPress={onForgotPasswordPressed}
-          text="Forgot password?"
-          type="link"
-        />
+
+        <TouchableOpacity style={styles.forgotPasswordContainer} onPress={onForgotPasswordPressed}>
+          <Text style={styles.forgotPassword}>
+            Forgot Password?
+          </Text>
+        </TouchableOpacity>
 
         {isLoading ? ( // Conditional rendering based on loading state
           <ActivityIndicator size="small" color="gray" /> // Display loading indicator while loading
@@ -103,8 +105,8 @@ export default function SignInScreen() {
         )}
         <SocialSignInButtons />
 
-        <TouchableOpacity style={styles.button} onPress={onSignUpPressed}>
-          <Text style={styles.buttonText}>
+        <TouchableOpacity style={styles.buttonRegister} onPress={onSignUpPressed}>
+          <Text style={styles.buttonTextRegister}>
             Don't have an account? Create One
           </Text>
         </TouchableOpacity>

@@ -1,5 +1,11 @@
-import { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInputs";
@@ -7,6 +13,8 @@ import SocialSignInButtons from "../../components/SocialSignInButtons";
 import { styles } from "./styles";
 import firestoreServices from "../../util/firebase/firestoreServices";
 import { ActivityIndicator } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState("");
@@ -15,8 +23,26 @@ export default function SignUpScreen() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [checkingPassword, setCheckingPassword] = useState(false);
+
+  const [hidePassword, setHidePassword] = useState(true);
+  const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
   const navigation = useNavigation();
+
+  const checkPassword = () => {
+    if (password !== passwordConfirm) {
+      setCheckingPassword(true);
+    } else {
+      setCheckingPassword(false);
+    }
+  };
+
+  useEffect(() => {
+    checkPassword();
+  }, [passwordConfirm]);
+
 
   //onSignInPressed
   const onSignInPressed = () => {
@@ -57,7 +83,7 @@ export default function SignUpScreen() {
   };
   const onPrivacyPressed = () => {
     //TODO: Create page and add page to navigation
-    navigation.navigate("PrivacyPolicy'");
+    navigation.navigate("PrivacyPolicy");
   };
 
   return (
@@ -75,19 +101,55 @@ export default function SignUpScreen() {
           setValue={setLastName}
         />
         <CustomInput placeholder="Email" value={email} setValue={setEmail} />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            secureTextEntry={hidePassword}
+            onFocus={() => setPasswordFocused(true)}
+          />
+          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <FontAwesomeIcon
+              icon={hidePassword ? faEye : faEyeSlash}
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+        {password.length < 8 && passwordFocused && (
+          <Text style={styles.hintText}>
+            Password should be minimum 8 characters!
+          </Text>
+        )}
 
-        <CustomInput
-          placeholder="Password"
-          value={password}
-          setValue={setPassword}
-          secureTextEntry={true}
-        />
-        <CustomInput
-          placeholder="Confirm Password"
-          value={passwordConfirm}
-          setValue={setPasswordConfirm}
-          secureTextEntry={true}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            value={passwordConfirm}
+            onChangeText={setPasswordConfirm}
+            placeholder="Confirm Password"
+            secureTextEntry={hidePasswordConfirm}
+          />
+          <TouchableOpacity
+            onPress={() => setHidePasswordConfirm(!hidePasswordConfirm)}
+          >
+            <FontAwesomeIcon
+              icon={hidePasswordConfirm ? faEye : faEyeSlash}
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+          
+        {checkingPassword && (
+          <Text style={styles.hintText}>
+            Passwords are not matching!
+          </Text>
+        )}
+      
+
         {isLoading ? ( // Conditional rendering based on loading state
           <ActivityIndicator size="small" color="gray" /> // Display loading indicator while loading
         ) : (

@@ -36,5 +36,27 @@ export const styles = StyleSheet.create({
   },
   link: {
     color: '#fdb075'
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    width: '100%',
+    borderColor: '#e8e8e8',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 5
+  },
+  input: {
+    flex: 1,
+    padding: 10,
+    margin: 5,
+  },
+  hintText: {
+    color: 'red',
+    marginLeft: 10
   }
+
 });

@@ -12,6 +12,8 @@ import HomeScreen from '../screens/HomeScreen';
 import AddWoundScreen from '../screens/AddWoundScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import WoundDetails from '../components/WoundDetails';
+import TermsOfUseScreen from '../screens/TermsOfUseScreen';
+import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen';
 
 // +++  Create Stack +++
 const Stack = createNativeStackNavigator();
@@ -35,6 +37,9 @@ export default function Navigation() {
         <Stack.Screen name="AddWoundScreen" component={AddWoundScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="WoundDetails" component={WoundDetails} />
+
+        <Stack.Screen name="TermsOfUse" component={TermsOfUseScreen} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
         
       </Stack.Navigator>
     </NavigationContainer>
