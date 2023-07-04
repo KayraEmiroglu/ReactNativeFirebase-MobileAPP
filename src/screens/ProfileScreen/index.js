@@ -1,60 +1,68 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { handleCameraPress } from "../../util/camera";
-import { styles } from './style';
-import Icon from "react-native-vector-icons/FontAwesome";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
-const ProfileScreen = () => {
-  const navigation = useNavigation();
+export function ProfileScreen() {
+  const [profilePhoto, setProfilePhoto] = useState(null);
 
-  const [name, setName] = useState('Emiroglu, Kayra');
-  const [email, setEmail] = useState('');
-  const [imageUri, setImageUri] = useState(null);
+  const handleChoosePhoto = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-  const handleUpdate = () => {
-    // Here you can handle the update logic
-    console.log('Updated:', name, email);
-  }
-
-  const updateImage = async () => {
-    const result = await handleCameraPress();
-    if (!result.canceled) {
-      setImageUri(result.uri);
+    if (permissionResult.granted === false) {
+      console.log("Permission to access media library is required");
+      return;
     }
-  }
+
+    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+    if (pickerResult.cancelled === true) {
+      console.log("User cancelled image picker");
+    } else {
+      setProfilePhoto(pickerResult.uri);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.imageWrapper} onPress={updateImage}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.profileImage} />
+      <Text style={styles.title}>Profile</Text>
+      <TouchableOpacity style={styles.photoContainer} onPress={handleChoosePhoto}>
+        {profilePhoto ? (
+          <Image source={{ uri: profilePhoto }} style={styles.photo} />
         ) : (
-            <Icon name="camera" size={30} color="#999" />
+          <Text style={styles.placeholderText}>Select a profile photo</Text>
         )}
       </TouchableOpacity>
-      <Text style={styles.title}>Welcome, {name}!</Text>
-      <Text style={styles.label}>Name:</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setName}
-        value={name}
-      />
-      <Text style={styles.label}>Email:</Text>
-      <TextInput
-    style={styles.input}
-    value="aa"
-    editable={false}
-/>
-      <Button 
-        title="Update"
-        onPress={handleUpdate}
-      />
-      <Button 
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}        
-      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  photoContainer: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: "#ccc",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  photo: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: "#999",
+  },
+});
 export default ProfileScreen;

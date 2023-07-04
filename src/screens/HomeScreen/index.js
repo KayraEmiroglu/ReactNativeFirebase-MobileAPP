@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView, Text, Alert } from "react-native";
 import TabBarComponent from "../../components/HomeTabBar";
 import WoundCard from "../../components/WoundCard";
 import { useEffect, useState } from "react";
@@ -6,10 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import firestoreServices from "../../util/firebase/firestoreServices";
 import { getWoundsByUserId } from "../../util/firebase/firebaseStorage";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteWoundAsync } from "../../util/action/woundAction";
 
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const navigation2 = useNavigation();
   const wounds = useSelector((state) => state.wound.wounds);
   const dispatch = useDispatch();
 
@@ -31,8 +32,13 @@ export default function HomeScreen() {
  
   //when i click the wound card, it should go to wound details screen
   const handleWoundCardPress = (wound) => {
-    navigation.navigate("WoundDetails", { wound });
+    navigation2.navigate("WoundDetails", { wound });
   };
+
+  const deleteWound = ({woundId}) => {
+    dispatch(deleteWoundAsync(woundId))
+  };
+
 
 
   return (
@@ -47,6 +53,7 @@ export default function HomeScreen() {
               wound={wound}
               count = {index+1}
               onPress={() => handleWoundCardPress(wound)}
+              onDelete={()=>deleteWound({woundId : wound.id})}
             />
           ))
           }

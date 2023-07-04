@@ -1,19 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
 import { Header } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { styles } from "./style";
 import firestoreServices from "../../util/firebase/firestoreServices";
 
 const TabBarComponent = () => {
   const navigation = useNavigation();
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  handleSideBarPress = () => {
-    setSidebarVisible(true);
+  const handleSideBarPress = () => {
+    navigation.openDrawer();
   };
 
   //get user info from with getCurrentUserId
@@ -34,8 +32,6 @@ const TabBarComponent = () => {
     return unsubscribe;
   }, []);
 
-
-
   //logout
   const handleLogoutPress = () => {
     firestoreServices
@@ -48,7 +44,9 @@ const TabBarComponent = () => {
       });
   };
 
-
+  const handleAddWoundPress = () => {
+    navigation.navigate("AddWoundScreen"); // Navigate to "AddWoundScreen"
+  };
 
   return (
     <View>
@@ -58,7 +56,7 @@ const TabBarComponent = () => {
             name="bars"
             size={30}
             color="#fff"
-            onPress={() => handleSideBarPress()}
+            onPress={handleSideBarPress}
           />
         }
         centerComponent={{
@@ -70,8 +68,7 @@ const TabBarComponent = () => {
             name="plus"
             size={30}
             color="#fff"
-            onPress={() => navigation.navigate("AddWoundScreen")}
-          />
+            onPress={handleAddWoundPress}          />
         }
         containerStyle={{
           backgroundColor: "#3da6d4",
