@@ -42,6 +42,7 @@ const AddWoundTabBar = ({setImageUri,location}) => {
         containerStyle={{
           backgroundColor: "#3da6d4",
           justifyContent: "space-around",
+          height:100,
         }}
       />
     </>

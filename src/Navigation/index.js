@@ -47,19 +47,21 @@ const TabNavigator = () => {
     <Tab.Navigator
       tabBarPosition="bottom"
       screenOptions={{
-        tabBarLabelStyle: { fontSize: 16}, // Tab etiketlerinin yazı boyutunu 16 olarak ayarlayın
-        tabBarStyle: { backgroundColor: "#3da6d4", height: 50 }, // Tab çubuğunun arka plan rengini ve yüksekliğini ayarlayın
+        tabBarLabelStyle: { fontSize: 16 }, // Tab etiketlerinin yazı boyutunu 16 olarak ayarlayın
+        tabBarStyle: { backgroundColor: "#3da6d4", height: 70 }, // Tab çubuğunun arka plan rengini ve yüksekliğini ayarlayın
         tabBarIconStyle: { marginBottom: -5 }, // Tab ikonlarının alt boşluğunu ayarlayın
       }}
     >
-      <Tab.Screen   
+      <Tab.Screen
         name="Main"
         component={Root}
         options={{
-          tabBarIcon: () => (
-            <Ionicons name="home" size={20} color={"blue"} />
-          ),
+          tabBarIcon: () => <Ionicons name="home" size={25} color={"white"} />,
           headerShown: false,
+          tabBarLabelStyle: {
+            color: "white",
+            fontSize: 16,
+          },
         }}
       />
       <Tab.Screen
@@ -67,9 +69,13 @@ const TabNavigator = () => {
         component={AddWoundScreen}
         options={{
           tabBarIcon: () => (
-            <Ionicons name="add-circle" size={20} color={"blue"} />
+            <Ionicons name="add-circle" size={25} color={"white"} />
           ),
           headerShown: false,
+          tabBarLabelStyle: {
+            color: "white",
+            fontSize: 16,
+          },
         }}
       />
       <Tab.Screen
@@ -77,9 +83,13 @@ const TabNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: () => (
-            <Ionicons name="person-sharp" size={20} color={"blue"} />
+            <Ionicons name="person-sharp" size={25} color={"white"} />
           ),
           headerShown: false,
+          tabBarLabelStyle: {
+            color: "white",
+            fontSize: 16,
+          },
         }}
       />
     </Tab.Navigator>

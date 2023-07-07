@@ -1,46 +1,61 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import moment from 'moment';
+import React, { useState } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import Progress from "../ProgressSections";
 
-const WoundDetails = ({ route }) => {
+// Sample data for the patient, location, onset, and last assessment
+const patient = "John Smith";
+const location = "Right Leg";
+const onset = "June12, 2021";
+const lastAssessment = "July 5, 2021";
+
+const WoundCardDetails = ({ route }) => {
+  const [showProgress, setShowProgress] = useState(false);
   const { wound } = route.params;
-  const formattedDate = moment(wound.createdAt).format('DD/MM/YYYY');
 
+  const handlePhotoClick = () => {
+    setShowProgress(!showProgress);
+  };
+
+  
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: wound.photoUrl }} />
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Location: {wound.location}</Text>
-        <Text style={styles.infoText}>Date: {formattedDate}</Text>
+      <View style={styles.topInfo}>
+        <Text style={styles.infoText}>{`Patient : ${patient}`}</Text>
+        <Text style={styles.infoText}>{`Location: ${location}`}</Text>
+        <Text style={styles.infoText}>{`Onset: ${onset}`}</Text>
+        <Text
+          style={styles.infoText}
+        >{`Last Assessment: ${lastAssessment}`}</Text>
       </View>
+
+      <TouchableOpacity onPress={handlePhotoClick}>
+        <Image style={styles.image} source={{ uri: wound.photoUrl }} />
+      </TouchableOpacity>
+      {showProgress &&  <Progress/>
+}
+     
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
-    padding: 10,
+    padding: 20,
   },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  infoContainer: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 10,
+  topInfo: {
+    marginBottom: 20,
   },
   infoText: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 10,
   },
-});
+  image: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    marginBottom: 20,
+  },
+};
 
-export default WoundDetails;
-
-
-
-
+export default WoundCardDetails;

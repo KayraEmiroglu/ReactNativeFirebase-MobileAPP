@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Alert, Button, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AddWoundTabBar from "../../components/AddWoundTabBar";
 import InteractiveImage from "../../components/BodyImage";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +22,7 @@ const AddWoundScreen = () => {
   const [location, setLocation] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [reset, setReset] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLocationSelect = (part) => {
     setLocation(part);
@@ -22,6 +30,7 @@ const AddWoundScreen = () => {
 
   const handleUploadPhoto = () => {
     try {
+      setLoading(true);
       const auth = getAuth();
       const user = auth.currentUser;
 
@@ -29,22 +38,32 @@ const AddWoundScreen = () => {
         throw new Error("User is not logged in");
       }
 
-      dispatch(uploadWoundPhoto(imageUri, location, user.uid))
-        .then(() => {
-          navigation.navigate("Home");
-        })
-        .catch((error) => {
-          console.log(error);
-          Alert.alert("An error occurred while uploading the photo.");
-        });
+      dispatch(uploadWoundPhoto(imageUri, location, user.uid)).then(() => {
+        updateState();
+        setReset((prevReset) => !prevReset);
+        setLoading(false);
+      });
     } catch (error) {
       console.log(error);
       Alert.alert("An error occurred while uploading the photo.");
+      setLoading(false);
     }
   };
 
-  const renderPage = () => {
-    navigation.navigate("Home");
+  const renderLoadingScreen = () => {
+    if (loading) {
+      return (
+        <View style={styles.loadingOverlay}>
+          <View style={styles.blurBackground} />
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="blue" />
+            <Text style={styles.loadingText}>Loading...</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return null;
+    }
   };
 
   //update states and selectedlocation red parts dissapeared
@@ -64,7 +83,6 @@ const AddWoundScreen = () => {
             style={styles.uploadButton}
             onPress={() => {
               handleUploadPhoto();
-              renderPage();
             }}
           >
             <Text style={styles.buttonText}>Confirm informations</Text>
@@ -80,6 +98,7 @@ const AddWoundScreen = () => {
           </TouchableOpacity>
         </>
       )}
+      {renderLoadingScreen()}
     </View>
   );
 };
