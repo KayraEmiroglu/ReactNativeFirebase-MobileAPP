@@ -45,7 +45,11 @@ export default function SignInScreen() {
     setIsLoading(true); // Start loading
 
     firestoreServices
-      .loginUser(email, password)
+      .loginUser(email, password).
+      then(() =>{ 
+        setEmail('');
+        setPassword('');
+      })   
       .then((user) => {
         navigation.navigate("Home");
       })

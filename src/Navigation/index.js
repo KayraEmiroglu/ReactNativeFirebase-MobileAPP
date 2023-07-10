@@ -17,6 +17,7 @@ import PrivacyPolicyScreen from "../screens/PrivacyPolicyScreen";
 import { Ionicons } from "react-native-vector-icons";
 import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CustomDrawer from "../components/CustomDrawer";
 
 // +++  Create Stack +++
 const Stack = createNativeStackNavigator();
@@ -27,17 +28,36 @@ const Tab = createBottomTabNavigator();
 //Sidebarda gözükecek olan şeyler
 export function Root() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawer {...props} />}
+    screenOptions={{
+      drawerActiveBackgroundColor:"#afeeee",
+      drawerActiveTintColor:"#e0ffff",
+      drawerInactiveTintColor:"#333",
+      drawerLabelStyle:{
+        marginLeft:-20,
+        fontWeight: "400",
+        fontSize:15,
+      }
+    }}>
       <Drawer.Screen
         name="Home"
         options={{
-          drawerLabel: () => <Text>Home</Text>,
-          drawerLabelStyle: { fontWeight: "100" },
           headerShown: false,
+          drawerIcon: () => (
+            <Ionicons name="home-outline" size={22} color={"#4dd0e1"} />
+          ),
         }}
         component={HomeScreen}
       />
-      <Drawer.Screen name="TermsOfUseScreen" component={TermsOfUseScreen} />
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: () => (
+            <Ionicons name="person-outline" size={22} color={"#4dd0e1"} />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
